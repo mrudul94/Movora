@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "645584422563",
+    "project_id": "movora-ade4c",
+    "storage_bucket": "movora-ade4c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645584422563:android:aa97741ee949dbc8f5e116",
+        "android_client_info": {
+          "package_name": "com.movora.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlrB2oG8F5c57OIwokFxtrHtuohEa-0T0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.movora_user
+package com.movora.app
 
 import io.flutter.embedding.android.FlutterActivity
 
