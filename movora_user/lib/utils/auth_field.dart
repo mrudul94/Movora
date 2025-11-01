@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:movora/utils/app_pattete.dart';
 import 'package:movora/viewmodels/firebase_auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class AuthField extends StatefulWidget {
+class AuthField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final bool isPassword;
+  final TextInputType keyboardType;
 
   const AuthField({
     super.key,
     required this.hintText,
     required this.controller,
     this.isPassword = false,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
-  State<AuthField> createState() => _AuthFieldState();
-}
-
-class _AuthFieldState extends State<AuthField> {
-  @override
   Widget build(BuildContext context) {
-    final authVM = Provider.of<FirebaseAuthViewModel>(context, listen: false);
+    final authVM = Provider.of<FirebaseAuthViewModel>(context);
     return TextFormField(
-      controller: widget.controller,
-      obscureText: widget.isPassword ? authVM.obscurePassword : false,
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: isPassword ? authVM.obscurePassword : false,
+      cursorColor: AppPallete.focusBorder,
       decoration: InputDecoration(
-        hintText: widget.hintText,
-        suffixIcon: widget.isPassword
+        hintText: hintText,
+        suffixIcon: isPassword
             ? IconButton(
                 onPressed: () {
                   authVM.toggleObscure();
@@ -39,16 +39,17 @@ class _AuthFieldState extends State<AuthField> {
                 ),
               )
             : null,
+
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
 
       validator: (value) {
         if (value!.isEmpty) {
-          return "${widget.hintText} is missing!";
+          return "$hintText is missing!";
         }
         return null;
       },
-      onChanged: widget.isPassword
+      onChanged: isPassword
           ? (value) {
               authVM.setTypingPassword(value.isNotEmpty);
             }

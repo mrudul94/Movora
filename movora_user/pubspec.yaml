@@ -39,6 +39,15 @@ dependencies:
   flutter_signin_button: ^2.1.1
   firebase_core: ^4.1.1
   firebase_auth: ^6.1.0
+  flutter_native_splash: ^2.4.6
+  carousel_slider: ^5.1.1
+  lucide_icons_flutter: ^3.1.2
+  google_fonts: ^6.3.2
+  permission_handler: ^12.0.1
+  image_picker: ^1.2.0
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
+  http: ^1.5.0
   
 
 dev_dependencies:
@@ -53,6 +62,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -66,10 +76,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/XbCFuE5U1U.json
-    - assets/Cute Tiger (1).json
-    - assets/Meditating Tiger.json
-    - assets/Movora_logo.png
+    - assets/images/
+    - assets/json/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -96,7 +105,25 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/logo.png
+  branding: assets/images/movoratext.png
+
+  android_12:
+    image: assets/images/logo.png
+    icon_background_color: "#000000"
+    branding: assets/images/movoratext.png
+
+
+
+
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/Movora_logo.png"
+  image_path: "assets/images/movora logo.jpg"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/images/logo.png"

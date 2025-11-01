@@ -12,7 +12,20 @@
           "package_name": "com.movora.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "645584422563-7qhnsmc25eealdusp07ghljeveeana7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.movora.app",
+            "certificate_hash": "1c81ed67f7272b26d735b015da1f503f75325eb2"
+          }
+        },
+        {
+          "client_id": "645584422563-56l69cs4l4hl58816k84aq358ujp46nl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDlrB2oG8F5c57OIwokFxtrHtuohEa-0T0"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645584422563-56l69cs4l4hl58816k84aq358ujp46nl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "645584422563-oj1ebvs5oo6t9k236u6j6rt45qn79ff9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.movoraUser"
+              }
+            }
+          ]
         }
       }
     }

@@ -8,7 +8,6 @@ class SplashScreenViewModel extends ChangeNotifier {
   final FirebaseAuthServices _authServices = FirebaseAuthServices();
 
   Future<void> initializeApp(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 3));
     bool loggedIn = await _authServices.isLogin();
 
     if (loggedIn) {

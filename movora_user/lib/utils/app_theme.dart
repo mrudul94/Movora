@@ -8,6 +8,18 @@ class Apptheme {
   );
   static final darkTheme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: AppPallete.backgroundColor,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Color(0xFF0D1B2A),
+      elevation: 0,
+      shadowColor: Colors.transparent,
+      iconTheme: const IconThemeData(color: Colors.white),
+      actionsIconTheme: const IconThemeData(color: Colors.white),
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       enabledBorder: _border(),
       focusedBorder: _border(AppPallete.focusBorder),

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthServices {
@@ -13,7 +12,6 @@ class FirebaseAuthServices {
       );
       return userCred.user;
     } on FirebaseAuthException catch (e) {
-      print("Sign Up Error: ${e.message}");
       throw e.message ?? "SignUp failed";
     }
   }
@@ -38,8 +36,17 @@ class FirebaseAuthServices {
     }
   }
 
+  Future<void> forgotPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      log('sent correctly');
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? "Password reset failed";
+    }
+  }
+
   Future<bool> isLogin() async {
-    await Future.delayed(Duration(seconds: 1));
-    return false;
+    final user = _auth.currentUser;
+    return user != null;
   }
 }

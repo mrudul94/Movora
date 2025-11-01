@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:lottie/lottie.dart';
 import 'package:movora/utils/app_pattete.dart';
 import 'package:movora/utils/app_routes.dart';
 import 'package:movora/utils/auth_field.dart';
 import 'package:movora/utils/auth_gradient_button.dart';
 import 'package:movora/utils/snack_bar.dart';
+import 'package:movora/utils/tiger_animation.dart';
 import 'package:movora/viewmodels/firebase_auth_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -44,19 +44,7 @@ class SignupPage extends StatelessWidget {
                       SizedBox(
                         height: 120,
                         width: 120,
-                        child: Consumer<FirebaseAuthViewModel>(
-                          builder: (context, authVM, child) {
-                            return authVM.isTypingPassword
-                                ? LottieBuilder.asset(
-                                    'assets/Meditating Tiger.json',
-                                    key: ValueKey(authVM.isTypingPassword),
-                                  )
-                                : LottieBuilder.asset(
-                                    'assets/Cute Tiger (1).json',
-                                    key: ValueKey(authVM.isTypingPassword),
-                                  );
-                          },
-                        ),
+                        child: Tiger_animation(),
                       ),
                     ],
                   ),
@@ -66,7 +54,11 @@ class SignupPage extends StatelessWidget {
                     controller: userNamecontroler,
                   ),
                   SizedBox(height: 20),
-                  AuthField(hintText: 'Email', controller: emailController),
+                  AuthField(
+                    hintText: 'Email',
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
                   SizedBox(height: 20),
                   AuthField(
                     hintText: 'Password',

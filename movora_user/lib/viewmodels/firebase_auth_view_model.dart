@@ -14,6 +14,9 @@ class FirebaseAuthViewModel extends ChangeNotifier {
   String? _error;
   String? get error => _error;
 
+  String? _message;
+  String? get message => _message;
+
   Future<void> signUp(String email, String password) async {
     try {
       _loading = true;
@@ -58,6 +61,17 @@ class FirebaseAuthViewModel extends ChangeNotifier {
       _error = null;
     } catch (e) {
       _error = "Logout failed: $e";
+    }
+    notifyListeners();
+  }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.forgotPassword(email);
+
+      _message = "Password reset email sent"; // optional success message
+    } catch (e) {
+      _error = e.toString();
     }
     notifyListeners();
   }

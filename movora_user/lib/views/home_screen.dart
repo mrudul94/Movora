@@ -1,15 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:movora/utils/bottom_nav_bar.dart';
+import 'package:movora/utils/custom_app_bar.dart';
+import 'package:movora/views/favorite.dart';
+import 'package:movora/views/home_page_content.dart';
+import 'package:movora/utils/slider_menu.dart';
+import 'package:movora/viewmodels/botton_nav_view_model.dart';
+import 'package:movora/viewmodels/search_view_model.dart';
+import 'package:movora/views/post_your_ad_page.dart';
+import 'package:movora/views/shift_hub.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    final bottomNavVM = context.watch<BottomNavViewModel>();
+
+    final List<Widget> pages = [
+      const HomePageContent(), // <-- new reusable widget
+      ShiftHub(),
+      const PostYourAdPage(),
+      const Favorite(),
+    ];
+
+    return Scaffold(
+      drawer: const Drawer(child: SliderMenu()),
+      appBar: CustomAppBar(searchVM: context.watch<SearchViewModel>()),
+      body: pages[bottomNavVM.currentIndex],
+      bottomNavigationBar: const CustomBottomNavBar(),
+    );
   }
 }

@@ -69,6 +69,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '645584422563',
     projectId: 'movora-ade4c',
     storageBucket: 'movora-ade4c.firebasestorage.app',
+    androidClientId: '645584422563-7qhnsmc25eealdusp07ghljeveeana7q.apps.googleusercontent.com',
+    iosClientId: '645584422563-oj1ebvs5oo6t9k236u6j6rt45qn79ff9.apps.googleusercontent.com',
     iosBundleId: 'com.example.movoraUser',
   );
+
 }

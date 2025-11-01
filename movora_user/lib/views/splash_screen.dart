@@ -1,39 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:movora/utils/app_pattete.dart';
 import 'package:movora/viewmodels/splash_screen_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final splshVM = Provider.of<SplashScreenViewModel>(context, listen: false);
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Remove native splash once Flutter UI is ready
+    FlutterNativeSplash.remove();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      splshVM.initializeApp(context);
+      context.read<SplashScreenViewModel>().initializeApp(context);
     });
-    return Scaffold(
-      body: Center(
-        child: Stack(
-          children: [
-            LottieBuilder.asset('assets/XbCFuE5U1U.json'),
-            Positioned(
-              top: 220,
-              left: 80,
-              child: Text(
-                'Movora',
-                style: TextStyle(
-                  color: AppPallete.whiteColor,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(child: CircularProgressIndicator(color: Colors.white)),
     );
   }
 }

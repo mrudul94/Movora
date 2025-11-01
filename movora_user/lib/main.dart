@@ -3,27 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:movora/firebase_options.dart';
 import 'package:movora/utils/app_routes.dart';
 import 'package:movora/utils/app_theme.dart';
+import 'package:movora/viewmodels/botton_nav_view_model.dart';
 import 'package:movora/viewmodels/firebase_auth_view_model.dart';
+import 'package:movora/viewmodels/home_page_item_view_model.dart';
+import 'package:movora/viewmodels/image_picker_view_model.dart';
+import 'package:movora/viewmodels/search_view_model.dart';
+import 'package:movora/viewmodels/shift_booking_view_model.dart';
+import 'package:movora/viewmodels/slider_menu_view_model.dart';
 import 'package:movora/viewmodels/splash_screen_view_model.dart';
 import 'package:movora/views/home_screen.dart';
 import 'package:movora/views/login_screen.dart';
 import 'package:movora/views/signup_page.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:movora/views/splash_screen.dart';
 
 import 'package:provider/provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SplashScreenViewModel()),
         ChangeNotifierProvider(create: (_) => FirebaseAuthViewModel()),
+        ChangeNotifierProvider(create: (_) => SearchViewModel()),
+        ChangeNotifierProvider(create: (_) => SliderMenuViewModel()),
+        ChangeNotifierProvider(create: (_) => ShiftHubVM()),
+        ChangeNotifierProvider(create: (_) => CategoryVM()),
+        ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
+        ChangeNotifierProvider(create: (_) => ShiftBookingViewModel()),
+        ChangeNotifierProvider(create: (_) => ImagePickerViewModel()),
       ],
       child: MyApp(),
     ),
   );
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
@@ -35,9 +51,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Apptheme.darkTheme,
-      initialRoute: '/',
+      home: SplashScreen(),
       routes: {
-        AppRoutes.splash: (context) => SplashScreen(),
         AppRoutes.home: (context) => HomeScreen(),
         AppRoutes.login: (context) => LoginScreen(),
         AppRoutes.signup: (context) => SignupPage(),
