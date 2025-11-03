@@ -15,14 +15,6 @@ class PickupDetails extends StatelessWidget {
         key: bookingVM.formKey,
         child: Column(
           children: [
-            const Text(
-              'Pickup Address',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
             const SizedBox(height: 20),
             ProductDetailsField(
               hintText: 'Full Name (Required)*',
@@ -50,6 +42,7 @@ class PickupDetails extends StatelessWidget {
                 TextButton.icon(
                   onPressed: () async {
                     final vm = context.read<ShiftBookingViewModel>();
+
                     await vm.useCurrentLocation();
                   },
                   label: Text(

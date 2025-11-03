@@ -20,7 +20,6 @@ class ProductDetails extends StatelessWidget {
         key: bookingVM.formKey,
         child: Column(
           children: [
-            Text('Product details'),
             SizedBox(
               width: double.infinity,
               child: ProductDetailsField(

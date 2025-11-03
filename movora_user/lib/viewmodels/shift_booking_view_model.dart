@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -85,6 +84,37 @@ class ShiftBookingViewModel extends ChangeNotifier {
   void onPageChanged(int index) {
     _currentStep = index;
     notifyListeners();
+  }
+
+  Widget appbarTitle(int index) {
+    if (index == 0) {
+      return Text(
+        'Pickup Address',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      );
+    } else if (index == 1) {
+      return Text(
+        'Product details',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      );
+    } else {
+      return Text(
+        'Delivery Address',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 
   /// --- Booking Confirmation ---
@@ -213,21 +243,38 @@ class ShiftBookingViewModel extends ChangeNotifier {
     if (placeMark.isNotEmpty) {
       Placemark place = placeMark.first;
 
-      pincodeController.text = place.postalCode ?? '';
-      stateController.text = place.administrativeArea ?? '';
+      TextEditingController pinCtrl = TextEditingController();
+      TextEditingController cityCtrl = TextEditingController();
+      TextEditingController stateCtrl = TextEditingController();
+      TextEditingController roadCtrl = TextEditingController();
+
+      pinCtrl.text = place.postalCode ?? '';
+      stateCtrl.text = place.administrativeArea ?? '';
 
       if (place.postalCode != null && place.postalCode!.isNotEmpty) {
         final district = await _getDistrict(place.postalCode);
 
         if (district != null) {
-          cityController.text = district;
+          cityCtrl.text = district;
         }
       }
       final roadName = await getRoadName(position.latitude, position.longitude);
       if (roadName != null) {
-        roadNameController.text = roadName;
+        roadCtrl.text = roadName;
       }
-
+      if (currentStep == 0) {
+        // Pickup
+        pincodeController.text = pinCtrl.text;
+        cityController.text = cityCtrl.text;
+        stateController.text = stateCtrl.text;
+        roadNameController.text = roadCtrl.text;
+      } else {
+        // Delivery
+        deliveryPincodeController.text = pinCtrl.text;
+        deliveryCityController.text = cityCtrl.text;
+        deliveryStateController.text = stateCtrl.text;
+        deliveryroadNameController.text = roadCtrl.text;
+      }
       notifyListeners();
       debugPrint('📍 Location fetched successfully!');
       debugPrint(cityController.text);

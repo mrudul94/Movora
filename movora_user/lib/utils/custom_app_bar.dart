@@ -46,17 +46,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           iconSize: 30,
         ),
       ],
-      title: bookVM.currentIndex == 1
-          ? Text(
-              "Book Your Shift",
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppPallete.whiteColor,
-              ),
-            )
-          : null,
-      centerTitle: true,
     );
   }
 

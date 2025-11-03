@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movora/firebase_options.dart';
 import 'package:movora/utils/app_routes.dart';
 import 'package:movora/utils/app_theme.dart';
+import 'package:movora/utils/shift_hub_pickup_details.dart';
 import 'package:movora/viewmodels/botton_nav_view_model.dart';
 import 'package:movora/viewmodels/firebase_auth_view_model.dart';
 import 'package:movora/viewmodels/home_page_item_view_model.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.home: (context) => HomeScreen(),
         AppRoutes.login: (context) => LoginScreen(),
         AppRoutes.signup: (context) => SignupPage(),
+        AppRoutes.shiftBooking: (context) => ShiftHub(),
       },
     );
   }

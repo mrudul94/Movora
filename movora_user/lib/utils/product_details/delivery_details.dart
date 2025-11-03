@@ -16,10 +16,6 @@ class DeliveryDetails extends StatelessWidget {
         key: bookingVM.formKey,
         child: Column(
           children: [
-            const Text(
-              'Delivery Address',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
             const SizedBox(height: 20),
             ProductDetailsField(
               hintText: 'Full Name (Required)*',
@@ -44,12 +40,15 @@ class DeliveryDetails extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final vm = context.read<ShiftBookingViewModel>();
+                    await vm.useCurrentLocation();
+                  },
                   label: Text(
                     'Use my location',
                     style: TextStyle(color: AppPallete.focusBorder),
                   ),
-                  icon: Icon(Icons.my_location),
+                  icon: Icon(Icons.my_location, color: AppPallete.focusBorder),
                 ),
               ],
             ),
