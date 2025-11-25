@@ -13,7 +13,7 @@ class DeliveryDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
-        key: bookingVM.formKey,
+        key: bookingVM.deliveryFormKey,
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -27,6 +27,53 @@ class DeliveryDetails extends StatelessWidget {
               hintText: 'Phone Number (Required)*',
               controller: bookingVM.deliveryContactController,
               keyboardType: TextInputType.phone,
+            ),
+            const SizedBox(height: 20),
+            ProductDetailsField(
+              hintText: 'Alternate Number (optional)*',
+              controller: bookingVM.deliveryAlternativeContactController,
+              keyboardType: TextInputType.phone,
+              isRequired: false,
+            ),
+            const SizedBox(height: 20),
+            ProductDetailsField(
+              hintText: 'Delivery Type',
+              isDropdown: true,
+              controller: bookingVM.deliveryTypeController,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      title: const Text('Select Delivery Type'),
+                      content: Consumer<ShiftBookingViewModel>(
+                        builder: (context, vm, _) {
+                          return SizedBox(
+                            width: double.maxFinite,
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: vm.deliveryType.map((dvType) {
+                                return RadioListTile<String>(
+                                  title: Text(dvType),
+                                  value: dvType,
+                                  groupValue: vm.selectedDeliveryType,
+                                  onChanged: (value) {
+                                    vm.selectdeliveryType(value!);
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
             ),
             const SizedBox(height: 20),
             Row(
@@ -105,7 +152,7 @@ class DeliveryDetails extends StatelessWidget {
                 ),
               ],
             ),
-
+            SizedBox(height: 20),
             ProductDetailsField(
               hintText: 'House No., Building Name (Required)*',
               controller: bookingVM.deliveryAddressController,

@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movora/models/user_model.dart';
 import 'package:movora/services/firebase_auth_services.dart';
+import 'package:movora/services/firestore_service.dart';
 
 class FirebaseAuthViewModel extends ChangeNotifier {
   final FirebaseAuthServices _firebaseAuth = FirebaseAuthServices();
-
+  final FirestoreService _firestoreService = FirestoreService();
+  bool isLoading = false;
   User? _user;
   User? get user => _user;
 
@@ -36,6 +39,20 @@ class FirebaseAuthViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> initUser() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser == null) {
+      debugPrint("⚠️ No logged-in user");
+      return;
+    }
+
+    _user = firebaseUser;
+
+    // Fetch Firestore user profile
+    await fetchUserDetails(firebaseUser.uid);
+  }
+
   Future<void> login(String email, String password) async {
     try {
       _loading = true;
@@ -56,12 +73,14 @@ class FirebaseAuthViewModel extends ChangeNotifier {
 
   Future<void> logout() async {
     try {
+      notifyListeners();
       await _firebaseAuth.signOut();
       _user = null;
       _error = null;
     } catch (e) {
       _error = "Logout failed: $e";
     }
+
     notifyListeners();
   }
 
@@ -90,6 +109,31 @@ class FirebaseAuthViewModel extends ChangeNotifier {
 
   void setTypingPassword(bool value) {
     _isTypingPassword = value;
+    notifyListeners();
+  }
+
+  Future<void> saveUserDetails(UserModel user) async {
+    isLoading = true;
+    notifyListeners();
+
+    await _firestoreService.saveUser(user);
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  UserModel? currentUserModel;
+
+  Future<void> fetchUserDetails(String uid) async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      currentUserModel = await _firestoreService.getUser(uid);
+    } catch (e) {
+      debugPrint("❌ Error fetch booking: $e");
+    }
+    isLoading = false;
     notifyListeners();
   }
 }

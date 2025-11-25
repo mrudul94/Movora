@@ -1,65 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movora/utils/app_pattete.dart';
+import 'package:movora/viewmodels/shift_booking_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ShiftHubScreen extends StatelessWidget {
   const ShiftHubScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final bookVM = Provider.of<ShiftBookingViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Movora',
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Movora',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Choose Your Shift Type',
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                const SizedBox(height: 40),
+                Text(
+                  'Choose Your Shift Type',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 70),
+                const SizedBox(height: 70),
 
-              // The two cards
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ShiftCard(
-                    icon: Icons.local_shipping_rounded,
-                    title: 'Easy Shift',
-                    description: 'For small or single-item deliveries',
-                    glowColor: Color(0xFF3B82F6),
-                    buttonColor: Color(0xFF3B82F6),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/shiftbooking');
-                    },
-                  ),
-                  ShiftCard(
-                    icon: Icons.warehouse_rounded,
-                    title: 'Bulk Shift',
-                    description: 'For large or multi-item moves',
-                    glowColor: Color(0xFFF97316),
-                    buttonColor: Color(0xFFF97316),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/shiftbooking');
-                    },
-                  ),
-                ],
-              ),
-            ],
+                // The two cards
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ShiftCard(
+                      icon: Icons.local_shipping_rounded,
+                      title: 'Easy Shift',
+                      description: 'For small or single-item deliveries',
+                      glowColor: Color(0xFF3B82F6),
+                      buttonColor: Color(0xFF3B82F6),
+                      onTap: () {
+                        bookVM.deliveryTypeController.text = 'Easy Shift';
+                        Navigator.pushNamed(context, '/shiftbooking');
+                      },
+                    ),
+                    ShiftCard(
+                      icon: Icons.warehouse_rounded,
+                      title: 'Bulk Shift',
+                      description: 'For large or multi-item moves',
+                      glowColor: Color(0xFFF97316),
+                      buttonColor: Color(0xFFF97316),
+                      onTap: () {
+                        bookVM.deliveryTypeController.text = 'Bulk Shift';
+                        Navigator.pushNamed(context, '/shiftbooking');
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -8,6 +8,7 @@ class ProductDetailsField extends StatelessWidget {
   final int maxLines;
   final VoidCallback? onTap;
   final bool isRequired;
+  final bool isDropdown;
 
   const ProductDetailsField({
     super.key,
@@ -17,6 +18,7 @@ class ProductDetailsField extends StatelessWidget {
     this.maxLines = 1,
     this.onTap,
     this.isRequired = true,
+    this.isDropdown = false,
   });
 
   @override
@@ -29,8 +31,11 @@ class ProductDetailsField extends StatelessWidget {
       readOnly: onTap != null,
       onTap: onTap,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+
       decoration: InputDecoration(
+        suffixIcon: isDropdown ? Icon(Icons.arrow_drop_down) : null,
         hintText: hintText,
+        hintStyle: TextStyle(fontSize: 12, color: AppPallete.greyColor),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(

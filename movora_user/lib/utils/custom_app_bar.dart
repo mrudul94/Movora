@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:movora/utils/app_pattete.dart';
-import 'package:movora/viewmodels/botton_nav_view_model.dart';
 import 'package:movora/viewmodels/search_view_model.dart';
-import 'package:movora/viewmodels/shift_booking_view_model.dart';
-import 'package:provider/provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? image;
@@ -14,7 +9,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookVM = Provider.of<BottomNavViewModel>(context, listen: false);
     return AppBar(
       backgroundColor: Colors.transparent,
       leading: Builder(

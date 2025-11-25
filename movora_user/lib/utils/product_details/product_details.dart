@@ -17,7 +17,7 @@ class ProductDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
-        key: bookingVM.formKey,
+        key: bookingVM.productdetailsFormKey,
         child: Column(
           children: [
             SizedBox(

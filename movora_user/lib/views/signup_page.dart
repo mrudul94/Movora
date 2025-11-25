@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:movora/models/user_model.dart';
 import 'package:movora/utils/app_pattete.dart';
 import 'package:movora/utils/app_routes.dart';
 import 'package:movora/utils/auth_field.dart';
@@ -74,6 +76,13 @@ class SignupPage extends StatelessWidget {
                           emailController.text.trim(),
                           passwordcontroller.text.trim(),
                         );
+                        final user = UserModel(
+                          uid: FirebaseAuth.instance.currentUser!.uid,
+                          username: userNamecontroler.text.trim(),
+                          email: emailController.text.trim(),
+                        );
+                        await authVM.saveUserDetails(user);
+                        await authVM.fetchUserDetails(user.uid);
                         if (authVM.user != null) {
                           Navigator.pushNamed(context, AppRoutes.login);
                           snackbar(

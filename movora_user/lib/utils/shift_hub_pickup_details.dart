@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:movora/models/shift_booking_model.dart';
 import 'package:movora/utils/app_pattete.dart';
 import 'package:movora/utils/bottom_next_previous_button.dart';
 import 'package:movora/utils/product_details/delivery_details.dart';
@@ -7,11 +8,11 @@ import 'package:movora/utils/product_details/pickup_details.dart';
 import 'package:movora/utils/product_details/product_details.dart';
 import 'package:movora/viewmodels/image_picker_view_model.dart';
 import 'package:movora/viewmodels/shift_booking_view_model.dart';
+import 'package:movora/views/shift_booked.dart';
 import 'package:provider/provider.dart';
 
 class ShiftHub extends StatefulWidget {
   ShiftHub({super.key});
-  final formKey = GlobalKey<FormState>();
 
   @override
   State<ShiftHub> createState() => _ShiftHubState();
@@ -75,11 +76,38 @@ class _ShiftHubState extends State<ShiftHub> {
                       onPrevious: bookingVM.prevStep,
                       onNextOrConfirm: () {
                         // ✅ Validate the form before proceeding
-                        if (bookingVM.formKey.currentState!.validate()) {
+                        bool isValid = false;
+
+                        // ✅ Validate only the current step’s form
+                        if (bookingVM.currentStep == 0) {
+                          isValid =
+                              bookingVM.pickupFormKey.currentState
+                                  ?.validate() ??
+                              false;
+                        } else if (bookingVM.currentStep == 1) {
+                          isValid =
+                              bookingVM.productdetailsFormKey.currentState
+                                  ?.validate() ??
+                              false;
+                        } else if (bookingVM.currentStep == 2) {
+                          isValid =
+                              bookingVM.deliveryFormKey.currentState
+                                  ?.validate() ??
+                              false;
+                        }
+                        if (isValid) {
                           if (bookingVM.currentStep ==
                               bookingVM.totalSteps - 1) {
-                            // ✅ Last step → confirm booking
-                            bookingVM.confirmBooking();
+                            debugPrint('🟢 Confirm button pressed');
+                            bookingVM.conformShiftBooking(
+                              FirebaseAuth.instance.currentUser!.uid,
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ShiftBookedPage(),
+                              ),
+                            );
                           } else {
                             // ✅ Not last step → go to next page
                             bookingVM.nextStep();

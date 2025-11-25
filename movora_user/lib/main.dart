@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:movora/firebase_options.dart';
+import 'package:movora/services/firestore_service.dart';
 import 'package:movora/utils/app_routes.dart';
 import 'package:movora/utils/app_theme.dart';
 import 'package:movora/utils/shift_hub_pickup_details.dart';
@@ -14,6 +15,7 @@ import 'package:movora/viewmodels/slider_menu_view_model.dart';
 import 'package:movora/viewmodels/splash_screen_view_model.dart';
 import 'package:movora/views/home_screen.dart';
 import 'package:movora/views/login_screen.dart';
+import 'package:movora/views/my_shift.dart';
 import 'package:movora/views/signup_page.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:movora/views/splash_screen.dart';
@@ -24,18 +26,30 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final imageVM = ImagePickerViewModel();
+  final firestoreService = FirestoreService();
+  final shiftBookingVM = ShiftBookingViewModel(
+    imageVM: imageVM,
+    firestoreService: firestoreService,
+  );
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SplashScreenViewModel()),
-        ChangeNotifierProvider(create: (_) => FirebaseAuthViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => FirebaseAuthViewModel()..initUser(),
+        ),
         ChangeNotifierProvider(create: (_) => SearchViewModel()),
         ChangeNotifierProvider(create: (_) => SliderMenuViewModel()),
         ChangeNotifierProvider(create: (_) => ShiftHubVM()),
         ChangeNotifierProvider(create: (_) => CategoryVM()),
         ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
-        ChangeNotifierProvider(create: (_) => ShiftBookingViewModel()),
-        ChangeNotifierProvider(create: (_) => ImagePickerViewModel()),
+        ChangeNotifierProvider<ImagePickerViewModel>.value(value: imageVM),
+        Provider<FirestoreService>.value(value: firestoreService),
+        ChangeNotifierProvider<ShiftBookingViewModel>.value(
+          value: shiftBookingVM,
+        ),
       ],
       child: MyApp(),
     ),

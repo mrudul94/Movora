@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:movora/utils/app_pattete.dart';
 import 'package:movora/viewmodels/botton_nav_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,7 @@ class CustomBottomNavBar extends StatelessWidget {
       onTap: (index) => bottomNavVM.updateIndex(index),
       backgroundColor: const Color(0xFF0B1220),
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purpleAccent,
+      selectedItemColor: AppPallete.focusBorder,
       unselectedItemColor: Colors.grey.withOpacity(0.6),
       showUnselectedLabels: true,
       items: const [

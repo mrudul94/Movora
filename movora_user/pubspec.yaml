@@ -48,6 +48,11 @@ dependencies:
   geolocator: ^14.0.2
   geocoding: ^4.0.0
   http: ^1.5.0
+  cloud_firestore: ^6.1.0
+  firebase_storage: ^13.0.4
+  confetti: ^0.8.0
+  intl: ^0.20.2
+
   
 
 dev_dependencies:

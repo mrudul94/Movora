@@ -1,11 +1,24 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math' as math;
+
+import 'package:movora/models/shift_booking_model.dart';
+import 'package:movora/services/firestore_service.dart';
+import 'package:movora/viewmodels/image_picker_view_model.dart';
 
 class ShiftBookingViewModel extends ChangeNotifier {
+  final FirestoreService firestoreService;
+  final ImagePickerViewModel imageVM;
+
+  ShiftBookingViewModel({
+    required this.firestoreService,
+    required this.imageVM,
+  });
+
   /// --- PageView Controller ---
   final PageController pageController = PageController();
   int _currentStep = 0;
@@ -19,6 +32,10 @@ class ShiftBookingViewModel extends ChangeNotifier {
 
   String? get selectedPickUpState => _selectedPickUpState;
   String? get selectedDeliveryState => _selectedDeliveryState;
+
+  String? _selectedDeliveryType;
+
+  String? get selectedDeliveryType => _selectedDeliveryType;
 
   /// --- Pickup Details Controllers ---
   final nameController = TextEditingController();
@@ -48,8 +65,12 @@ class ShiftBookingViewModel extends ChangeNotifier {
   final deliveryDateController = TextEditingController();
   final deliveryTimeController = TextEditingController();
   final deliveryContactController = TextEditingController();
+  final deliveryAlternativeContactController = TextEditingController();
   final deliveryroadNameController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final deliveryTypeController = TextEditingController();
+  final pickupFormKey = GlobalKey<FormState>();
+  final deliveryFormKey = GlobalKey<FormState>();
+  final productdetailsFormKey = GlobalKey<FormState>();
 
   /// --- Step Navigation ---
   void setTotalSteps(int count) {
@@ -118,12 +139,6 @@ class ShiftBookingViewModel extends ChangeNotifier {
   }
 
   /// --- Booking Confirmation ---
-  void confirmBooking() {
-    debugPrint("✅ Booking confirmed successfully!");
-    debugPrint("Pickup Address: ${pickupAddressController.text}");
-    debugPrint("Delivery Name: ${deliveryNameController.text}");
-    // TODO: Add API/Database save logic here
-  }
 
   /// --- Dispose All Controllers ---
   @override
@@ -151,11 +166,12 @@ class ShiftBookingViewModel extends ChangeNotifier {
     deliveryDateController.dispose();
     deliveryTimeController.dispose();
     deliveryContactController.dispose();
+    deliveryAlternativeContactController.dispose();
     deliveryCityController.dispose();
     deliveryStateController.dispose();
     deliveryPincodeController.dispose();
     deliveryroadNameController.dispose();
-
+    deliveryTypeController.dispose();
     super.dispose();
   }
 
@@ -190,6 +206,12 @@ class ShiftBookingViewModel extends ChangeNotifier {
     'West Bengal',
     'Delhi',
   ];
+  final List<String> deliveryType = ['Easy Shift', 'Bulk Shift'];
+  void selectdeliveryType(String dvType) {
+    _selectedDeliveryType = dvType;
+    deliveryTypeController.text = dvType;
+    notifyListeners();
+  }
 
   void selectPickupState(String state) {
     _selectedPickUpState = state;
@@ -337,5 +359,119 @@ class ShiftBookingViewModel extends ChangeNotifier {
       debugPrint('❌ Error fetching road name: $e');
     }
     return null;
+  }
+
+  String _generateShiftId() {
+    final random = math.Random.secure();
+    final randomCode = List.generate(
+      6,
+      (_) => String.fromCharCode(random.nextInt(26) + 65), // A–Z
+    ).join();
+
+    return 'SFT-$randomCode';
+  }
+
+  bool isLoading = false;
+
+  Future<String?> uploadToCloudinary(File imageFile) async {
+    try {
+      final url = Uri.parse(
+        'https://api.cloudinary.com/v1_1/dp8vrxufl/image/upload',
+      );
+
+      final request = http.MultipartRequest('POST', url)
+        ..fields['upload_preset'] = 'movora_preset'
+        ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await http.Response.fromStream(response);
+        final data = json.decode(responseData.body);
+        print('✅ Uploaded to Cloudinary: ${data['secure_url']}');
+        return data['secure_url'];
+      } else {
+        print('❌ Failed to upload: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('❌ Cloudinary upload error: $e');
+      return null;
+    }
+  }
+
+  Future<void> conformShiftBooking(String userId) async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      final shiftId = _generateShiftId();
+      String? imageUrl;
+      if (imageVM.selectedImage != null) {
+        final file = File(imageVM.selectedImage!.path);
+        imageUrl = await uploadToCloudinary(file);
+      }
+
+      final shiftBooking = ShiftBookingModel(
+        shiftId: shiftId,
+        deliveryType: deliveryTypeController.text,
+        status: 'pending',
+        createdAt: DateTime.now(),
+        pickupDetails: {
+          'name': nameController.text,
+          'phone': pickupContactController.text,
+          'pinCode': pincodeController.text,
+          'state': stateController.text,
+          'city': cityController.text,
+          'house': pickupAddressController.text,
+          'roadname': roadNameController.text,
+          'landMark': pickupLandmarkController.text,
+        },
+        productDetails: {
+          'productname': productNameController.text,
+          'productweight': productWeightController.text,
+          'productquntity': productQuantityController.text,
+          'productDescriptionController': productDescriptionController.text,
+          'imageUrl': imageUrl,
+        },
+        deliveryDetails: {
+          'deliveryname': deliveryNameController.text,
+          'phone': deliveryContactController.text,
+          'alterphone': deliveryAlternativeContactController.text,
+          'deliveryType': deliveryTypeController.text,
+          'pinCode': deliveryPincodeController.text,
+          'state': deliveryStateController.text,
+          'city': deliveryCityController.text,
+          'house': deliveryAddressController.text,
+          'roadname': deliveryroadNameController.text,
+          'landMark': deliveryLandmarkController.text,
+        },
+      );
+      await firestoreService.addShiftBooking(userId, shiftBooking);
+      debugPrint('✅ Booking stored successfully: $shiftId');
+    } catch (e) {
+      debugPrint("❌ Error saving booking: $e");
+    }
+    isLoading = false;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> shiftBookingList = [];
+
+  Future<void> fetchShiftBookingdetails(String userId) async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      final bookings = await firestoreService.fetchShiftbookings(userId);
+
+      // ✅ Convert ShiftBookingModel objects to Map for UI usage
+      shiftBookingList = bookings.map((b) => b.toMap()).toList();
+      debugPrint('✅ Booking fetch successfully: $userId');
+    } catch (e) {
+      debugPrint("❌ Error fetch booking: $e");
+    }
+    isLoading = false;
+    notifyListeners();
+    debugPrint('✅ : $shiftBookingList');
   }
 }

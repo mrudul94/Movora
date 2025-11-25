@@ -12,7 +12,7 @@ class PickupDetails extends StatelessWidget {
     final bookingVM = Provider.of<ShiftBookingViewModel>(context);
     return SingleChildScrollView(
       child: Form(
-        key: bookingVM.formKey,
+        key: bookingVM.pickupFormKey,
         child: Column(
           children: [
             const SizedBox(height: 20),

@@ -54,6 +54,7 @@ class HomePageContent extends StatelessWidget {
                             isSelected: shiftHubVM.selectedIndex == index,
                             onTap: () {
                               shiftHubVM.selectItem(index);
+                              item.onTap(context);
                             },
                           );
                         },

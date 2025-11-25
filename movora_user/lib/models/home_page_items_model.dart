@@ -5,5 +5,7 @@ class HomePageItem {
   final String title;
   final IconData icon;
 
-  HomePageItem({required this.title, required this.icon});
+  final Function(BuildContext) onTap;
+
+  HomePageItem({required this.title, required this.icon, required this.onTap});
 }
