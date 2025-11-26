@@ -1,16 +1,36 @@
-# movora_user
+Movora – Shift Booking App (Flutter UI)
 
-A new Flutter project.
+A clean and modern UI for booking shifts in the Movora application.
+This project demonstrates Flutter UI skills and includes multiple screens such as:
 
-## Getting Started
+Shift Booking
 
-This project is a starting point for a Flutter application.
+Order Details
 
-A few resources to get you started if this is your first Flutter project:
+Progress Timeline
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Delivery Address
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Upcoming Shifts
+
+User Dashboard
+
+The app showcases layout design, component usage, and integration with location services using geolocator and geocoding.
+
+Features
+
+Select shift date and time
+
+View detailed order information
+
+Step-based progress indicator for booking status
+
+Clean and modern UI design
+
+Modular and reusable widgets
+
+Integrated location services using geolocator and geocoding
+
+Screenshots included for visual reference
+
+
