@@ -33,23 +33,23 @@ Integrated location services using geolocator and geocoding
 
 Screenshots included for visual reference
 
-<img src="screenshots/0.1login.jpg" width="300"/>
+<img src="screenshot/0.1login.jpg" width="300"/>
 
 
-<img src="screenshots/0.12 login.jpg" width="300"/>
+<img src="screenshot/0.12 login.jpg" width="300"/>
 
-<img src="screenshots/1.jpg" width="300"/>
+<img src="screenshot/1.jpg" width="300"/>
 
-<img src="screenshots/2.jpg" width="300"/>
+<img src="screenshot/2.jpg" width="300"/>
 
-<img src="screenshots/3.jpg" width="300"/>
+<img src="screenshot/3.jpg" width="300"/>
 
-<img src="screenshots/4.jpg" width="300"/>
+<img src="screenshot/4.jpg" width="300"/>
 
-<img src="screenshots/5.jpg" width="300"/>
+<img src="screenshot/5.jpg" width="300"/>
 
-<img src="screenshots/6.jpg" width="300"/>
+<img src="screenshot/6.jpg" width="300"/>
 
-<img src="screenshots/7.jpg" width="300"/>
+<img src="screenshot/7.jpg" width="300"/>
 
-<img src="screenshots/8.jpg" width="300"/>
+<img src="screenshot/8.jpg" width="300"/>
